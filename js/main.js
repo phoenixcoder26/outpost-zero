@@ -236,8 +236,8 @@ function renderSetup() {
   $('#skyPick').innerHTML = skies.map((k) => `<button class="choice" data-sky="${k.id}" aria-pressed="${setup.sky === k.id}"><span class="tag">${k.tag}</span><span class="big">${k.icon}</span><h3>${k.name}</h3><p>${k.text}</p></button>`).join('');
   $$('#skyPick .choice').forEach((b) => (b.onclick = () => { setup.sky = b.dataset.sky; Fx.sfx.place(); renderSetup(); }));
   const modes = [
-    { id: 'cadet', icon: '🧑‍🚀', name: 'Cadet (ages 7–9)', text: '3 meters: Power, Air, Radiation. Extra hints from PIXEL.' },
-    { id: 'commander', icon: '👩‍🚀', name: 'Commander (ages 10–12)', text: 'Adds a greenhouse and food. Harder choices!' },
+    { id: 'cadet', icon: miniAstro(D.CREW[2], 'mode-cadet'), name: 'Cadet (ages 7–9)', text: '3 meters: Power, Air, Radiation. Extra hints from PIXEL.' },
+    { id: 'commander', icon: miniAstro(D.CREW[0], 'mode-cmd') + '<small class="star">⭐</small>', name: 'Commander (ages 10–12)', text: 'Adds a greenhouse and food. Harder choices!' },
   ];
   $('#modePick').innerHTML = modes.map((m) => `<button class="choice" data-mode="${m.id}" aria-pressed="${setup.mode === m.id}"><span class="big">${m.icon}</span><h3>${m.name}</h3><p>${m.text}</p></button>`).join('');
   $$('#modePick .choice').forEach((b) => (b.onclick = () => { setup.mode = b.dataset.mode; Fx.sfx.place(); renderSetup(); }));
