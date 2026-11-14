@@ -1,0 +1,9 @@
+{
+  "name": "outpost-zero",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Outpost Zero: Junior Astronaut Mission Trainer (NASA Space Apps 2026)",
+  "scripts": { "test": "node --test tests/sim.test.js" },
+  "license": "MIT"
+}

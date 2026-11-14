@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Outpost Zero — Junior Astronaut Mission Trainer</title>
+  <meta name="description" content="A free cartoon game for kids 7–12: run a Moon or Mars outpost, split your power between air, a radiation shield, the radio and food — and survive REAL solar storms from NASA's DONKI space weather data.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./vendor/gsap.min.js"></script>
+  <script src="./vendor/MotionPathPlugin.min.js"></script>
+  <script type="module" src="./js/main.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo">🚀 Outpost <b>Zero</b></div>
+  <span id="dayPill" class="pill hidden">Day 1 / 20</span>
+  <button id="skyBadge" class="skybadge hidden" title="Where the storm data comes from"></button>
+  <span class="spacer"></span>
+  <button id="btnVoice" class="iconbtn" aria-pressed="true" title="PIXEL reads aloud">🗣️</button>
+  <button id="btnVoicePick" class="iconbtn" title="Choose PIXEL's voice">🎙️</button>
+  <button id="btnMusic" class="iconbtn" aria-pressed="true" title="Music">🎵</button>
+  <button id="btnSound" class="iconbtn" aria-pressed="true" title="Sound effects">🔊</button>
+  <button id="btnCalm" class="iconbtn" aria-pressed="false" title="Calm mode: gentler, faster animations">🐢</button>
+  <button id="btnFull" class="iconbtn" title="Full screen" aria-label="Full screen">⛶</button>
+  <button id="btnNotebook" class="iconbtn" title="Science Notebook">📓</button>
+  <button id="btnAbout" class="iconbtn" title="About the real NASA data">ⓘ</button>
+</header>
+
+<!-- TITLE -->
+<section id="screen-title" class="screen active" aria-label="Title">
+  <div class="hero">
+    <div>
+      <h1>Outpost Zero <span>Junior Astronaut Mission Trainer</span></h1>
+      <p class="tag">Run a base on the Moon or Mars. Split your power. Survive <b>real</b> solar storms from NASA data!</p>
+      <div class="namebox"><label for="playerName">Your astronaut name:</label><input id="playerName" maxlength="20" placeholder="Type your name" autocomplete="off"></div>
+      <div class="btns">
+        <button id="btnNew" class="btn">🚀 New Mission</button>
+        <button id="btnContinue" class="btn secondary hidden">▶ Continue</button>
+        <button id="btnNotebook2" class="btn secondary">📓 Notebook</button>
+        <button id="btnAbout2" class="btn secondary">🛰️ The NASA data</button>
+      </div>
+      <p class="small" style="color:#b8c2ff;margin-top:14px">Made for the NASA Space Apps Challenge 2026 · Ages 7–12 · No account, no tracking.</p>
+    </div>
+    <div class="planetbox" aria-hidden="true">
+      <div class="planet moon" id="tMoon"></div>
+      <div class="planet mars" id="tMars"></div>
+      <div class="titlerocket" id="tRocket">🚀</div>
+      <div class="titleastro" id="tAstro" aria-label="An astronaut waving a USA flag" role="img"></div>
+    </div>
+  </div>
+</section>
+
+<!-- WORLD / SKY / MODE -->
+<section id="screen-world" class="screen" aria-label="Choose your mission">
+  <h2 class="step-title">1 · Pick your world</h2>
+  <div class="pickgrid" id="worldPick"></div>
+  <h2 class="step-title">2 · Pick your sky</h2>
+  <div class="skygrid" id="skyPick"></div>
+  <h2 class="step-title">3 · Pick your level</h2>
+  <div class="modegrid" id="modePick"></div>
+  <p class="center" style="margin-top:22px"><button id="btnToCrew" class="btn green">Meet your crew ▶</button></p>
+</section>
+
+<!-- CREW INTRO -->
+<section id="screen-crew" class="screen" aria-label="Meet the crew">
+  <h2 class="step-title">Meet your crew!</h2>
+  <div class="crewintro" id="crewIntro"></div>
+  <div class="tips">
+    <div class="tip"><b>⚡ 1. Share the power</b>Give Air 3 blocks. One for each astronaut!</div>
+    <div class="tip"><b>🔭 2. Explore or stay in</b>Explorers find science stars. Inside is safer!</div>
+    <div class="tip"><b>☀️ 3. Watch the Sun</b>Storm coming? Use the 🛡️ Shield and stay inside!</div>
+  </div>
+  <p class="center" style="margin-top:22px"><button id="btnLaunch" class="btn coral">🚀 Launch the mission!</button></p>
+</section>
+
+<!-- BASE -->
+<section id="screen-base" class="screen" aria-label="Your outpost">
+  <div class="base">
+    <div class="maincol">
+      <div class="stage" id="stage">
+        <svg id="scene" role="img" aria-label="Your cartoon outpost"></svg>
+        <canvas id="fx"></canvas>
+        <div id="toast" class="toast hidden"></div>
+        <div class="hud"><div class="hudmeters" id="meters"></div><button class="hudpill risk" id="riskBox" title="PIXEL's machine-learning guess about today's plan"></button></div>
+        <div class="pixeldock stagepixel" id="pixelDock"></div>
+        <div id="alert" class="alert hidden" role="alert"></div>
+        <button id="btnSkip" class="btn small secondary skipbtn hidden">Skip ⏩</button>
+        <button id="btnNext" class="nextbtn" aria-label="Next day"><span class="arrow">▶</span><span class="lbl">Next Day</span></button>
+      </div>
+    <div class="board">
+      <div class="pool" id="poolBox">
+        <h3>⚡ Today's power</h3>
+        <div class="count"><span id="poolCount">0</span> left</div>
+        <div class="blocks" id="pool"></div>
+        <div class="small" id="poolNote"></div>
+      </div>
+      <div class="slots" id="slots"></div>
+      <div class="jobs" id="jobs"></div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- REPORT -->
+<section id="screen-report" class="screen" aria-label="Mission report">
+  <div class="bigwords" id="repWords"></div>
+  <div class="report">
+    <div class="panel trophybox">
+      <div id="trophyArt"></div>
+      <div class="trophyname" id="trophyName"></div>
+      <div class="starsrow" id="starsRow"></div>
+      <div class="small" id="starsWhy"></div>
+      <div id="danceFloor" class="dancefloor"></div>
+    </div>
+    <div class="panel">
+      <h2 id="repTitle"></h2>
+      <p id="repText" style="font-size:18px"></p>
+      <h3>🏅 Badges you won</h3>
+      <div class="badges" id="repBadges"></div>
+      <h3 style="margin-top:14px">🧠 What PIXEL learned about you</h3>
+      <div id="repBrain"></div>
+      <h3 style="margin-top:14px">☀️ The storms you faced</h3>
+      <ul id="repStorms" style="font-size:16px"></ul>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <button id="btnCert" class="btn">📜 My certificate</button>
+        <button id="btnAgain" class="btn green">🔁 Play again</button>
+        <button id="btnOther" class="btn secondary">🪐 Try the other world</button>
+        <button id="btnHome" class="btn secondary">🏠 Home</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTEBOOK -->
+<section id="screen-notebook" class="screen" aria-label="Space sticker book">
+  <div class="panel nbpanel">
+    <h2 class="nbtitle">📓 My Space Sticker Book <span class="small" id="nbCount"></span></h2>
+    <div id="nbTop"></div>
+    <h3>🏅 My badges</h3>
+    <div class="badges" id="allBadges" style="margin-bottom:14px"></div>
+    <div id="nbCards"></div>
+    <p style="margin-top:16px"><button class="btn secondary back">◀ Back</button></p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="screen-about" class="screen about" aria-label="About the data">
+  <div class="panel" id="aboutBody"></div>
+</section>
+
+<div id="pixel" class="floating-pixel hidden">
+  <div class="pixel" id="pixelArt"></div>
+  <div class="bubble" id="bubble" aria-live="polite"><button class="say" id="btnSay" title="Read again">🔈</button><span id="bubbleText"></span></div>
+</div>
+
+<dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
+<div id="badgePop" class="badgepop hidden"></div>
+<div id="countdown" class="countdown hidden"></div>
+<div id="printArea"></div>
+</body>
+</html>

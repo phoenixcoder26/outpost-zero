@@ -1,0 +1,29 @@
+name: Fetch NASA space weather (DONKI)
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # every day at 06:00 UTC
+  workflow_dispatch:       # adds a "Run workflow" button
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Download the last 30 days from NASA DONKI
+        run: node scripts/fetch-nasa.mjs
+        env:
+          NASA_API_KEY: ${{ secrets.NASA_API_KEY }}
+      - name: Save the snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/live/donki.json
+          git diff --staged --quiet || git commit -m "Update NASA DONKI snapshot"
+          git push
