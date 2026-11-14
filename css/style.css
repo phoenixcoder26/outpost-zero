@@ -413,3 +413,16 @@ body.full .stage { max-width: min(100%, calc((100vh - 320px) * 2.4)) !important;
 .slot .ctrl [data-plus] { order: 1; } .slot .ctrl [data-minus] { order: 2; } .slot .ctrl .small { order: 3; font-weight: 700; }
 .slot .ctrl button.pm { width: 36px !important; height: 34px !important; }
 .slot .preview { grid-area: pv; }
+/* setup screens fit on one laptop screen: compact cards, icon on the left */
+#screen-world .step-title { font-size: 24px; margin: 6px 0 8px; }
+#screen-world .choice { display: grid; grid-template-columns: 62px 1fr; column-gap: 14px; align-items: center; padding: 10px 16px; font-size: 16px; }
+#screen-world .choice .big { font-size: 46px; grid-row: 1 / span 3; align-self: center; text-align: center; }
+#screen-world .choice h3 { font-size: 24px; margin: 0; }
+#screen-world .choice p, #screen-world .choice ul { margin: 2px 0 0; }
+#screen-world .choice li { margin: 1px 0; }
+#screen-world .pickgrid, #screen-world .skygrid, #screen-world .modegrid { gap: 14px; }
+/* the "next" button always stays on screen, so nobody has to scroll to find it */
+.cta { position: sticky; bottom: 10px; z-index: 30; margin-bottom: 0; }
+.cta .btn { box-shadow: 0 6px 0 var(--ink), 0 0 0 6px rgba(255,255,255,.25); }
+/* short laptop screens: smaller title so "New Mission" is visible without scrolling */
+@media (max-height: 760px) { .hero h1 { font-size: clamp(36px, 8.5vh, 64px) !important; line-height: 1.05; } .hero p.tag { margin: 8px 0 !important; } }
