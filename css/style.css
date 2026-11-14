@@ -426,6 +426,7 @@ body.full .stage { max-width: min(100%, calc((100vh - 320px) * 2.4)) !important;
 .cta .btn { box-shadow: 0 6px 0 var(--ink), 0 0 0 6px rgba(255,255,255,.25); }
 /* short laptop screens: smaller title so "New Mission" is visible without scrolling */
 @media (max-height: 760px) { .hero h1 { font-size: clamp(36px, 8.5vh, 64px) !important; line-height: 1.05; } .hero p.tag { margin: 8px 0 !important; } }
+<<<<<<< HEAD
 /* bigger setup cards; the picture column never overlaps the words */
 #screen-world .choice { grid-template-columns: 80px 1fr; column-gap: 18px; padding: 16px 20px; font-size: 18px; min-height: 110px; }
 #screen-world .choice .big { font-size: 58px; width: 80px; overflow: hidden; position: relative; line-height: 1; }
@@ -443,3 +444,5 @@ body.full .stage { max-width: min(100%, calc((100vh - 320px) * 2.4)) !important;
 #screen-world .choice li { margin: 0; }
 #screen-world .step-title { font-size: 24px; margin: 4px 0 8px; }
 #screen-world .pickgrid, #screen-world .skygrid, #screen-world .modegrid { gap: 16px; }
+=======
+>>>>>>> 8f447c2c3b65628a53ba89bfbcf9df2af47753e8
